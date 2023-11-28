@@ -588,6 +588,9 @@ containers contents {
 }
 
 /* You might like */
+.you-might {
+    margin-top:  3rem;
+}
 
 #you-might-like-container {
     width: 100%;
