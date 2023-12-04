@@ -30,6 +30,7 @@ productsCollection.get().then((querySnapshot) => {
     const additional = document.getElementById('product-additional-img');
     const might_like_container = document.getElementById('you-might-like-container');
     const product_about = document.getElementById('abouts-description');
+    let youMightLikeCounter = 0;
 
     querySnapshot.forEach((doc) => {
         const productData = doc.data();
@@ -85,28 +86,30 @@ productsCollection.get().then((querySnapshot) => {
             productElement.classList.add('you-might-square');
         
             productElement.innerHTML = `
-            <div onclick="redirectToProductDetails(this)">
-              <div class="product-thumb">
-              ${Data.imageUrl == null
-                ? `<img class="product-img" src="./images/placeholder.jpg" alt="">`
-                : `<img class="product-img" src="${Data.imageUrl}" alt="${Data.name}">`
-              }
-              </div>
-              <div class="product-about">
-                  <div class="product-descr">
-                      <div class="product-name">${Data.name}</div>
-                      <div>${Data.description}</div>
-                  </div>
-                  <div class="product-price">€${Data.price}</div>
-              </div>
-              </div>
+                <div onclick="redirectToProductDetails(this)">
+                    <div class="product-thumb">
+                    <img class="product-img" src="${Data.imageUrl || '../Images/no-image.jpg'}" alt="${Data.name}">
+                    </div>
+                    <div class="product-about">
+                        <div class="product-descr">
+                            <div class="product-name">${Data.name}</div>
+                            <div>${Data.description}</div>
+                        </div>
+                        <div class="product-price">€${Data.price}</div>
+                    </div>
+                </div>
             `;
-
             productElement.addEventListener('click', () => {
                 redirectToProductDetails(Data.Id);
             });
-      
-            might_like_container.appendChild(productElement);
+        
+            if (youMightLikeCounter < 5) {
+                might_like_container.appendChild(productElement);
+                youMightLikeCounter++;
+            } else {
+                return;
+            }
+                     
         });
     });
 });
